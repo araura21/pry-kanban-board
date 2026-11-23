@@ -1,0 +1,43 @@
+name: kanban
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-kanban}
+      POSTGRES_USER: ${DB_USERNAME:-kanban}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+  app:
+    build: .
+    volumes:
+      - .:/var/www/html
+      - ../kanban-board-app/resources:/var/www/html/resources
+      - ../kanban-board-app/public/css:/var/www/html/public/css
+      - ../kanban-board-app/public/js:/var/www/html/public/js
+      - ../kanban-board-app/public/fonts:/var/www/html/public/fonts
+      - ../kanban-board-app/public/favicon.ico:/var/www/html/public/favicon.ico:ro
+      - ../kanban-board-app/public/robots.txt:/var/www/html/public/robots.txt:ro
+    command: php artisan serve --host=0.0.0.0 --port=8000 --no-reload
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  reverb:
+    build: .
+    volumes:
+      - .:/var/www/html
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    ports:
+      - "${REVERB_PUBLIC_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres_data:

@@ -8,6 +8,6 @@ evolutivo que se aplica a un flujo de trabajo del mismo nombre.
 ## Stack
 
 - **Backend**: PHP y Laravel
-- **Frontend**: próximo a implementar: vue o angular
+- **Frontend actual**: vistas Blade, CSS y JavaScript en `kanban-board-app`; Vue o Angular quedan como una posible evolución futura.
 - **BD**: PostgreSQL
 

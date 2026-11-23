@@ -1,0 +1,411 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-23T00:17:22.837304+00:00",
+  "title": "Design System: Tablero Kanban del equipo",
+  "extensions": {
+    "colorMeta": {
+      "fondo": {
+        "role": "neutral",
+        "displayName": "Fondo claro",
+        "tonalRamp": [
+          "oklch(15.00% 0.00409 121.56)",
+          "oklch(26.43% 0.00409 121.56)",
+          "oklch(37.86% 0.00409 121.56)",
+          "oklch(49.29% 0.00409 121.56)",
+          "oklch(60.71% 0.00409 121.56)",
+          "oklch(72.14% 0.00409 121.56)",
+          "oklch(83.57% 0.00409 121.56)",
+          "oklch(95.00% 0.00409 121.56)"
+        ]
+      },
+      "papel": {
+        "role": "neutral",
+        "displayName": "Papel blanco",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "columna": {
+        "role": "neutral",
+        "displayName": "Columna suave",
+        "tonalRamp": [
+          "oklch(15.00% 0.00735 132.42)",
+          "oklch(26.43% 0.00735 132.42)",
+          "oklch(37.86% 0.00735 132.42)",
+          "oklch(49.29% 0.00735 132.42)",
+          "oklch(60.71% 0.00735 132.42)",
+          "oklch(72.14% 0.00735 132.42)",
+          "oklch(83.57% 0.00735 132.42)",
+          "oklch(95.00% 0.00735 132.42)"
+        ]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "tonalRamp": [
+          "oklch(15.00% 0.01879 161.03)",
+          "oklch(26.43% 0.01879 161.03)",
+          "oklch(37.86% 0.01879 161.03)",
+          "oklch(49.29% 0.01879 161.03)",
+          "oklch(60.71% 0.01879 161.03)",
+          "oklch(72.14% 0.01879 161.03)",
+          "oklch(83.57% 0.01879 161.03)",
+          "oklch(95.00% 0.01879 161.03)"
+        ]
+      },
+      "suave": {
+        "role": "neutral",
+        "displayName": "Texto secundario",
+        "tonalRamp": [
+          "oklch(15.00% 0.02332 154.37)",
+          "oklch(26.43% 0.02332 154.37)",
+          "oklch(37.86% 0.02332 154.37)",
+          "oklch(49.29% 0.02332 154.37)",
+          "oklch(60.71% 0.02332 154.37)",
+          "oklch(72.14% 0.02332 154.37)",
+          "oklch(83.57% 0.02332 154.37)",
+          "oklch(95.00% 0.02332 154.37)"
+        ]
+      },
+      "linea": {
+        "role": "neutral",
+        "displayName": "Línea suave",
+        "tonalRamp": [
+          "oklch(15.00% 0.01429 138.71)",
+          "oklch(26.43% 0.01429 138.71)",
+          "oklch(37.86% 0.01429 138.71)",
+          "oklch(49.29% 0.01429 138.71)",
+          "oklch(60.71% 0.01429 138.71)",
+          "oklch(72.14% 0.01429 138.71)",
+          "oklch(83.57% 0.01429 138.71)",
+          "oklch(95.00% 0.01429 138.71)"
+        ]
+      },
+      "verde": {
+        "role": "primary",
+        "displayName": "Verde de acción",
+        "tonalRamp": [
+          "oklch(15.00% 0.07396 162.18)",
+          "oklch(26.43% 0.07396 162.18)",
+          "oklch(37.86% 0.07396 162.18)",
+          "oklch(49.29% 0.07396 162.18)",
+          "oklch(60.71% 0.07396 162.18)",
+          "oklch(72.14% 0.07396 162.18)",
+          "oklch(83.57% 0.07396 162.18)",
+          "oklch(95.00% 0.07396 162.18)"
+        ]
+      },
+      "verde-hover": {
+        "role": "primary",
+        "displayName": "Verde de interacción",
+        "tonalRamp": [
+          "oklch(15.00% 0.05933 162.20)",
+          "oklch(26.43% 0.05933 162.20)",
+          "oklch(37.86% 0.05933 162.20)",
+          "oklch(49.29% 0.05933 162.20)",
+          "oklch(60.71% 0.05933 162.20)",
+          "oklch(72.14% 0.05933 162.20)",
+          "oklch(83.57% 0.05933 162.20)",
+          "oklch(95.00% 0.05933 162.20)"
+        ]
+      },
+      "error": {
+        "role": "secondary",
+        "displayName": "Rojo de error",
+        "tonalRamp": [
+          "oklch(15.00% 0.11749 29.59)",
+          "oklch(26.43% 0.11749 29.59)",
+          "oklch(37.86% 0.11749 29.59)",
+          "oklch(49.29% 0.11749 29.59)",
+          "oklch(60.71% 0.11749 29.59)",
+          "oklch(72.14% 0.11749 29.59)",
+          "oklch(83.57% 0.11749 29.59)",
+          "oklch(95.00% 0.11749 29.59)"
+        ]
+      },
+      "aviso": {
+        "role": "secondary",
+        "displayName": "Ocre de aviso",
+        "tonalRamp": [
+          "oklch(15.00% 0.08621 77.18)",
+          "oklch(26.43% 0.08621 77.18)",
+          "oklch(37.86% 0.08621 77.18)",
+          "oklch(49.29% 0.08621 77.18)",
+          "oklch(60.71% 0.08621 77.18)",
+          "oklch(72.14% 0.08621 77.18)",
+          "oklch(83.57% 0.08621 77.18)",
+          "oklch(95.00% 0.08621 77.18)"
+        ]
+      },
+      "campo-borde": {
+        "role": "neutral",
+        "displayName": "Borde de campo",
+        "tonalRamp": [
+          "oklch(15.00% 0.02114 150.01)",
+          "oklch(26.43% 0.02114 150.01)",
+          "oklch(37.86% 0.02114 150.01)",
+          "oklch(49.29% 0.02114 150.01)",
+          "oklch(60.71% 0.02114 150.01)",
+          "oklch(72.14% 0.02114 150.01)",
+          "oklch(83.57% 0.02114 150.01)",
+          "oklch(95.00% 0.02114 150.01)"
+        ]
+      },
+      "foco": {
+        "role": "primary",
+        "displayName": "Verde de foco",
+        "tonalRamp": [
+          "oklch(15.00% 0.08219 161.08)",
+          "oklch(26.43% 0.08219 161.08)",
+          "oklch(37.86% 0.08219 161.08)",
+          "oklch(49.29% 0.08219 161.08)",
+          "oklch(60.71% 0.08219 161.08)",
+          "oklch(72.14% 0.08219 161.08)",
+          "oklch(83.57% 0.08219 161.08)",
+          "oklch(95.00% 0.08219 161.08)"
+        ]
+      },
+      "error-fondo": {
+        "role": "secondary",
+        "displayName": "Fondo de error",
+        "tonalRamp": [
+          "oklch(15.00% 0.01049 39.44)",
+          "oklch(26.43% 0.01049 39.44)",
+          "oklch(37.86% 0.01049 39.44)",
+          "oklch(49.29% 0.01049 39.44)",
+          "oklch(60.71% 0.01049 39.44)",
+          "oklch(72.14% 0.01049 39.44)",
+          "oklch(83.57% 0.01049 39.44)",
+          "oklch(95.00% 0.01049 39.44)"
+        ]
+      },
+      "error-borde": {
+        "role": "secondary",
+        "displayName": "Borde de error",
+        "tonalRamp": [
+          "oklch(15.00% 0.04302 30.89)",
+          "oklch(26.43% 0.04302 30.89)",
+          "oklch(37.86% 0.04302 30.89)",
+          "oklch(49.29% 0.04302 30.89)",
+          "oklch(60.71% 0.04302 30.89)",
+          "oklch(72.14% 0.04302 30.89)",
+          "oklch(83.57% 0.04302 30.89)",
+          "oklch(95.00% 0.04302 30.89)"
+        ]
+      },
+      "aviso-fondo": {
+        "role": "secondary",
+        "displayName": "Fondo de aviso",
+        "tonalRamp": [
+          "oklch(15.00% 0.01422 84.58)",
+          "oklch(26.43% 0.01422 84.58)",
+          "oklch(37.86% 0.01422 84.58)",
+          "oklch(49.29% 0.01422 84.58)",
+          "oklch(60.71% 0.01422 84.58)",
+          "oklch(72.14% 0.01422 84.58)",
+          "oklch(83.57% 0.01422 84.58)",
+          "oklch(95.00% 0.01422 84.58)"
+        ]
+      },
+      "aviso-borde": {
+        "role": "secondary",
+        "displayName": "Borde de aviso",
+        "tonalRamp": [
+          "oklch(15.00% 0.05001 86.33)",
+          "oklch(26.43% 0.05001 86.33)",
+          "oklch(37.86% 0.05001 86.33)",
+          "oklch(49.29% 0.05001 86.33)",
+          "oklch(60.71% 0.05001 86.33)",
+          "oklch(72.14% 0.05001 86.33)",
+          "oklch(83.57% 0.05001 86.33)",
+          "oklch(95.00% 0.05001 86.33)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "headline",
+        "purpose": "Título de página; 26px en ancho estrecho."
+      },
+      "body": {
+        "displayName": "body",
+        "purpose": "Texto general."
+      },
+      "brand": {
+        "displayName": "brand",
+        "purpose": "Marca enlazada del encabezado."
+      },
+      "column-title": {
+        "displayName": "column-title",
+        "purpose": "Nombre de columna."
+      },
+      "card-title": {
+        "displayName": "card-title",
+        "purpose": "Título de tarea."
+      },
+      "label": {
+        "displayName": "label",
+        "purpose": "Etiqueta de nueva tarea."
+      },
+      "compact": {
+        "displayName": "compact",
+        "purpose": "Conexión, política, contador y vacío."
+      },
+      "metadata": {
+        "displayName": "metadata",
+        "purpose": "Ayuda, autor, identificador y eliminación."
+      },
+      "action": {
+        "displayName": "action",
+        "purpose": "Acción de compromiso."
+      },
+      "button": {
+        "displayName": "button",
+        "purpose": "Botón principal."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "card-appear",
+        "value": "aparecer 180ms ease-out",
+        "purpose": "Cambio de fondo #e5f0e8 → var(--papel), solo con prefers-reduced-motion: no-preference."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "700px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acceso, registro y creación de tarjeta.",
+      "html": "<button class=\"ds-primary\">Crear tarjeta</button>",
+      "css": ".ds-primary{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;min-height:40px;padding:8px 14px;border:1px solid transparent;border-radius:6px;cursor:pointer;background:var(--verde,#225c43);color:var(--papel,#ffffff);font-weight:600}.ds-primary:hover:not(:disabled){background:var(--verde-hover,#174330)}.ds-primary:focus-visible{outline:3px solid #357557;outline-offset:3px}.ds-primary:disabled{opacity:.6;cursor:wait}"
+    },
+    {
+      "name": "Botón de texto",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Cerrar sesión o recargar cuando corresponde.",
+      "html": "<button class=\"ds-text\">Cerrar sesión</button>",
+      "css": ".ds-text{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;min-height:40px;padding:8px 14px;border:1px solid transparent;border-radius:6px;cursor:pointer;padding-inline:4px;background:transparent;color:var(--verde,#225c43);text-decoration:underline;text-underline-offset:3px}.ds-text:hover{color:var(--verde-hover,#174330)}.ds-text:focus-visible{outline:3px solid #357557;outline-offset:3px}.ds-text:disabled{opacity:.6;cursor:wait}"
+    },
+    {
+      "name": "Comprometer tarea",
+      "kind": "button",
+      "refersTo": "action-move",
+      "description": "Acción disponible dentro de la tarjeta.",
+      "html": "<button class=\"ds-move\">Pasar a Por hacer</button>",
+      "css": ".ds-move{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;min-height:40px;padding:8px 14px;border:1px solid transparent;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;padding:6px 0;min-height:36px;background:transparent;color:var(--verde,#225c43)}.ds-move:hover{text-decoration:underline;text-underline-offset:3px}.ds-move:focus-visible{outline:3px solid #357557;outline-offset:3px}.ds-move:disabled{opacity:.6;cursor:wait}"
+    },
+    {
+      "name": "Eliminar tarea",
+      "kind": "button",
+      "refersTo": "action-delete",
+      "description": "Acción disponible dentro de la tarjeta.",
+      "html": "<button class=\"ds-delete\">Eliminar</button>",
+      "css": ".ds-delete{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;min-height:40px;padding:8px 14px;border:1px solid transparent;border-radius:6px;cursor:pointer;font-size:12px;font-weight:400;padding:6px 0;min-height:36px;background:transparent;color:var(--error,#923d32)}.ds-delete:hover{text-decoration:underline;text-underline-offset:3px}.ds-delete:focus-visible{outline:3px solid #357557;outline-offset:3px}.ds-delete:disabled{opacity:.6;cursor:wait}"
+    },
+    {
+      "name": "Campo de nueva tarea",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Etiqueta visible, ejemplo y foco del campo.",
+      "html": "<label class=\"ds-label\" for=\"ds-title\">Nueva tarea</label><input class=\"ds-input\" id=\"ds-title\" placeholder=\"Por ejemplo: preparar la demostración\" maxlength=\"100\">",
+      "css": ".ds-label{display:block;margin-bottom:6px;font:600 14px/1.5 \"Segoe UI\",system-ui,sans-serif;color:var(--tinta,#202b25)}.ds-input{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;width:100%;padding:10px 12px;border:1px solid #aab7ac;border-radius:6px;background:var(--papel,#ffffff);color:var(--tinta,#202b25);caret-color:var(--verde,#225c43)}.ds-input::placeholder{color:#657269}.ds-input:hover{border-color:var(--suave,#56645a)}.ds-input:focus-visible{outline:2px solid #357557;outline-offset:1px}"
+    },
+    {
+      "name": "Tarjeta de tarea",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Estructura real con datos de ejemplo para la previsualización.",
+      "html": "<article class=\"ds-card\" tabindex=\"-1\"><span class=\"ds-id\">#1</span><h3 class=\"ds-task-title\">Preparar la demostración</h3><p class=\"ds-author\">Creada por Integrante</p><div class=\"ds-actions\"><button class=\"ds-card-move\">Pasar a Por hacer</button><button class=\"ds-card-delete\">Eliminar</button></div></article>",
+      "css": ".ds-card{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;background:var(--papel,#ffffff);color:var(--tinta,#202b25);border:1px solid var(--linea,#d5dcd3);border-radius:12px;padding:14px;overflow-wrap:anywhere}.ds-id,.ds-author{font-size:12px;color:var(--suave,#56645a)}.ds-id{font-variant-numeric:tabular-nums}.ds-author{margin:0}.ds-task-title{font-size:15px;line-height:1.4;font-weight:600;margin:10px 0 14px;white-space:pre-wrap}.ds-actions{display:flex;flex-wrap:wrap;gap:4px 10px;border-top:1px solid var(--linea,#d5dcd3);margin-top:14px;padding-top:8px}.ds-card-move,.ds-card-delete{font:600 12px/1.5 \"Segoe UI\",system-ui,sans-serif;padding:6px 0;min-height:36px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--verde,#225c43);cursor:pointer}.ds-card-delete{font-weight:400;color:var(--error,#923d32)}.ds-card-move:hover,.ds-card-delete:hover{text-decoration:underline;text-underline-offset:3px}.ds-card:focus-visible,.ds-card-move:focus-visible,.ds-card-delete:focus-visible{outline:3px solid #357557;outline-offset:3px}@media(prefers-reduced-motion:no-preference){.ds-card{animation:ds-appear 180ms ease-out}@keyframes ds-appear{from{background-color:#e5f0e8}to{background-color:var(--papel,#ffffff)}}}"
+    },
+    {
+      "name": "Columna vacía",
+      "kind": "custom",
+      "refersTo": "column",
+      "description": "Columna de estado con contador y mensaje vacío.",
+      "html": "<section class=\"ds-column\"><header class=\"ds-column-head\"><h2 class=\"ds-column-title\">Creado</h2><span class=\"ds-count\" aria-label=\"Cantidad de tareas\">0</span></header><p class=\"ds-empty\">Las nuevas ideas empiezan aquí.</p></section>",
+      "css": ".ds-column{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;color:var(--tinta,#202b25);min-height:370px;background:var(--columna,#eef1ec);border-radius:10px;padding:12px}.ds-column-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 16px}.ds-column-title{margin:0;font-size:15px;font-weight:650}.ds-count{font-size:13px;color:var(--suave,#56645a);font-variant-numeric:tabular-nums}.ds-empty{margin:0;text-align:center;padding:40px 8px;color:var(--suave,#56645a);font-size:13px}"
+    },
+    {
+      "name": "Encabezado compartido",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Marca y sesión, sin navegación de módulos futuros.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-brand\" href=\"#contenido\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"3\"/><path d=\"M9 3v18M15 3v18M5.5 7h1M11.5 11h1M17.5 7h1\"/></svg>Kanban</a><div class=\"ds-session\"><span class=\"ds-user\">Integrante</span><button class=\"ds-logout\">Cerrar sesión</button></div></header>",
+      "css": ".ds-header{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;min-height:72px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--linea,#d5dcd3);background:var(--papel,#ffffff);color:var(--tinta,#202b25)}.ds-brand{display:inline-flex;align-items:center;gap:10px;color:var(--tinta,#202b25);text-decoration:none;font-weight:700;font-size:20px;letter-spacing:-.02em}.ds-brand svg{width:26px;height:26px;color:var(--verde,#225c43)}.ds-session{display:flex;gap:20px;align-items:center;min-width:0}.ds-user{max-width:230px;overflow-wrap:anywhere}.ds-logout{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;min-height:40px;padding:8px 14px;border:1px solid transparent;border-radius:6px;cursor:pointer;color:var(--verde,#225c43);background:transparent;text-decoration:underline;text-underline-offset:3px;padding-inline:4px;font:inherit}.ds-logout:hover{color:var(--verde-hover,#174330)}.ds-brand:focus-visible,.ds-logout:focus-visible{outline:3px solid #357557;outline-offset:3px}@media(max-width:700px){.ds-header{padding:12px 20px;flex-wrap:wrap}.ds-session{gap:12px;font-size:13px}.ds-user{max-width:130px}}"
+    },
+    {
+      "name": "Mensaje de error",
+      "kind": "custom",
+      "refersTo": "message-error",
+      "description": "Mensaje semántico dentro del flujo.",
+      "html": "<div class=\"ds-message-error\" role=\"status\">Escribe un título para la tarea.</div>",
+      "css": ".ds-message-error{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;padding:12px 16px;border:1px solid #d9b5ae;border-radius:6px;margin-bottom:20px;background:#fff6f3;color:var(--error,#923d32);overflow-wrap:anywhere}"
+    },
+    {
+      "name": "Mensaje de aviso",
+      "kind": "custom",
+      "refersTo": "message-warning",
+      "description": "Mensaje semántico dentro del flujo.",
+      "html": "<div class=\"ds-message-aviso\" role=\"status\">La conexión volvió. Recarga el tablero para recuperar los cambios que pudiste perder.</div>",
+      "css": ".ds-message-aviso{font:15px/1.5 \"Segoe UI\",system-ui,sans-serif;padding:12px 16px;border:1px solid #dbcba8;border-radius:6px;margin-bottom:20px;background:#fffaf0;color:var(--aviso,#77551a);overflow-wrap:anywhere}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Tablero académico compartido",
+    "overview": "El sistema conserva el tablero de cinco columnas entregado para la clase. La interfaz es sobria, legible y orientada al uso diario: fondo claro, columnas suaves, tarjetas blancas con borde y verde oscuro para las acciones. El acceso y el registro comparten esta misma presentación.\n\nLa jerarquía depende del tamaño, el peso, el espacio y el contraste. No existe un comp aprobado ni una identidad visual adicional elegida: este documento registra la implementación de Blade, CSS y JavaScript, sin proponer una marca nueva.",
+    "keyCharacteristics": [
+      "Cinco columnas horizontales y tarjetas de lectura directa.",
+      "Verde oscuro para la acción y la conexión activa; texto para distinguir cada estado.",
+      "Tipografía de interfaz y superficies planas con bordes suaves.",
+      "Estados de espera, error y recuperación explícitos; foco conservado al actualizar tarjetas."
+    ],
+    "rules": [
+      {
+        "name": "The Action and State Rule",
+        "body": "El verde identifica acciones disponibles y conexión activa. El rojo identifica error o eliminación; el aviso usa ocre. Acompañar siempre el color con texto.",
+        "section": "colors"
+      },
+      {
+        "name": "The Shared Type Rule",
+        "body": "Acceso, registro y tablero usan la misma familia de interfaz. La jerarquía se obtiene con los roles registrados, sin introducir una voz de exhibición.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Las superficies se separan por fondo y borde. No añadir sombras para jerarquizar componentes del tablero.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do conservar la estructura de cinco columnas horizontales y el desplazamiento dentro del tablero.",
+      "Do usar etiquetas visibles, texto de estado y el foco de teclado del sistema.",
+      "Do mantener acceso, registro y tablero dentro de la misma paleta y jerarquía tipográfica.",
+      "Do mostrar únicamente acciones disponibles; conservar vacías y reconocibles las columnas posteriores.",
+      "Do conservar el foco en la acción o tarjeta equivalente tras cambios en vivo; si desaparece, devolverlo al campo de nueva tarea."
+    ],
+    "donts": [
+      "Don't presentar controles de módulos futuros como si estuvieran disponibles.",
+      "Don't comunicar conexión, error o eliminación únicamente mediante color.",
+      "Don't sustituir las columnas por tarjetas de panel independientes o añadir decoración que dificulte explicar el tablero en clase.",
+      "Don't considerar verificado el diseño móvil a partir de capturas de escritorio o de una ventana de 905 px."
+    ]
+  }
+}
