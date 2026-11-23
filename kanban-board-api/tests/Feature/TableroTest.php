@@ -9,6 +9,7 @@ use App\Models\Tarea;
 use App\Models\User;
 use App\Services\TareaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
@@ -100,6 +101,79 @@ class TableroTest extends TestCase
 
             return true;
         });
+    }
+
+    public function test_crear_guarda_y_difunde_la_fecha_manual_en_utc(): void
+    {
+        Event::fake([TareaCreada::class]);
+        $this->travelTo(Carbon::parse('2026-11-23T15:00:00Z'));
+        $usuario = User::factory()->create();
+
+        $respuesta = $this->actingAs($usuario)->postJson('/tareas', [
+            'titulo' => 'Con fecha manual',
+            'creadaEn' => '2026-11-01T09:30:00-05:00',
+        ])->assertCreated()
+            ->assertJsonPath('tarea.creadaEn', '2026-11-01T14:30:00.000000Z')
+            ->assertJsonPath('tarea.actualizadaEn', '2026-11-23T15:00:00.000000Z');
+
+        $this->assertDatabaseHas('tareas', [
+            'id' => $respuesta->json('tarea.id'),
+            'created_at' => '2026-11-01 14:30:00',
+            'updated_at' => '2026-11-23 15:00:00',
+        ]);
+        Event::assertDispatched(TareaCreada::class, fn ($evento) => $evento->tarea['creadaEn'] === '2026-11-01T14:30:00.000000Z');
+    }
+
+    public function test_servicio_acepta_una_fecha_manual_sin_hora(): void
+    {
+        Event::fake([TareaCreada::class]);
+        $usuario = User::factory()->create();
+
+        $resultado = app(TareaService::class)->crear($usuario->id, 'Solo fecha', '2026-11-01');
+
+        $this->assertSame('2026-11-01T00:00:00.000000Z', $resultado['tarea']['creadaEn']);
+        $this->assertDatabaseHas('tareas', ['id' => $resultado['tarea']['id'], 'created_at' => '2026-11-01 00:00:00']);
+        Event::assertDispatched(TareaCreada::class);
+    }
+
+    public function test_crear_sin_fecha_manual_usa_la_fecha_actual(): void
+    {
+        Event::fake([TareaCreada::class]);
+        $this->travelTo(Carbon::parse('2026-11-23T15:00:00Z'));
+        $this->actingAs(User::factory()->create());
+
+        foreach ([[], ['creadaEn' => null], ['creadaEn' => '']] as $datos) {
+            $respuesta = $this->postJson('/tareas', ['titulo' => 'Fecha actual', ...$datos])
+                ->assertCreated()->assertJsonPath('tarea.creadaEn', '2026-11-23T15:00:00.000000Z');
+            $this->assertDatabaseHas('tareas', ['id' => $respuesta->json('tarea.id'), 'created_at' => '2026-11-23 15:00:00']);
+        }
+        Event::assertDispatchedTimes(TareaCreada::class, 3);
+    }
+
+    public function test_crear_rechaza_fechas_invalidas_con_422_sin_guardar_ni_difundir(): void
+    {
+        Event::fake([TareaCreada::class]);
+        $this->actingAs(User::factory()->create());
+
+        foreach (['no-es-fecha', '2026-02-30', 'tomorrow', ['2026-11-01'], 123] as $fecha) {
+            $this->postJson('/tareas', ['titulo' => 'Fecha inválida', 'creadaEn' => $fecha])
+                ->assertUnprocessable()->assertJsonValidationErrors('creadaEn');
+        }
+        $this->assertDatabaseCount('tareas', 0);
+        Event::assertNotDispatched(TareaCreada::class);
+    }
+
+    public function test_mover_conserva_la_fecha_de_creacion_manual(): void
+    {
+        Event::fake([TareaMovida::class]);
+        $tarea = Tarea::factory()->create(['created_at' => '2026-11-01 09:30:00']);
+
+        $this->actingAs(User::factory()->create())->patchJson('/tareas/'.$tarea->id.'/mover', [
+            'estado' => 'por_hacer', 'version' => 1,
+        ])->assertOk()->assertJsonPath('tarea.creadaEn', '2026-11-01T09:30:00.000000Z');
+
+        $this->assertDatabaseHas('tareas', ['id' => $tarea->id, 'created_at' => '2026-11-01 09:30:00']);
+        Event::assertDispatched(TareaMovida::class, fn ($evento) => $evento->tarea['creadaEn'] === '2026-11-01T09:30:00.000000Z');
     }
 
     public function test_titulos_vacios_y_mayores_de_cien_se_rechazan(): void

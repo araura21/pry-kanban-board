@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'date' => 'El campo :attribute debe ser una fecha válida.',
     'required' => 'Completa el campo :attribute.',
     'string' => 'El campo :attribute debe ser texto.',
     'email' => 'Escribe un correo válido.',
@@ -9,5 +10,5 @@ return [
     'integer' => 'El campo :attribute debe ser un número entero.',
     'min' => ['string' => 'El campo :attribute debe tener al menos :min caracteres.', 'numeric' => 'El campo :attribute debe ser al menos :min.'],
     'max' => ['string' => 'El campo :attribute no puede superar :max caracteres.'],
-    'attributes' => ['name' => 'nombre', 'email' => 'correo', 'password' => 'contraseña', 'titulo' => 'título', 'estado' => 'columna', 'version' => 'versión'],
+    'attributes' => ['name' => 'nombre', 'email' => 'correo', 'password' => 'contraseña', 'titulo' => 'título', 'estado' => 'columna', 'version' => 'versión', 'creadaEn' => 'fecha de creación'],
 ];

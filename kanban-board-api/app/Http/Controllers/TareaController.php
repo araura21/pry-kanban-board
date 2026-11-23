@@ -11,9 +11,12 @@ class TareaController extends Controller
 {
     public function crear(Request $request, TareaService $servicio): JsonResponse
     {
-        $datos = $request->validate(['titulo' => ['required', 'string', 'max:100']]);
+        $datos = $request->validate([
+            'titulo' => ['required', 'string', 'max:100'],
+            'creadaEn' => ['nullable', 'string', 'date'],
+        ]);
         try {
-            return response()->json($servicio->crear($request->user()->id, $datos['titulo']), 201);
+            return response()->json($servicio->crear($request->user()->id, $datos['titulo'], $datos['creadaEn'] ?? null), 201);
         } catch (ReglaTableroException $error) {
             return response()->json(['error' => $error->getMessage()], 422);
         }

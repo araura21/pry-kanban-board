@@ -8,8 +8,10 @@ use App\Events\TareaMovida;
 use App\Exceptions\ReglaTableroException;
 use App\Models\Tarea;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class TareaService
@@ -26,14 +28,19 @@ class TareaService
 
     public const ELIMINABLES = ['creado', 'por_hacer'];
 
-    public function crear(int $usuarioId, string $titulo): array
+    public function crear(int $usuarioId, string $titulo, ?string $creadaEn = null): array
     {
         $titulo = trim($titulo);
         if ($titulo === '' || mb_strlen($titulo) > 100) {
             throw new ReglaTableroException('Escribe un título de entre 1 y 100 caracteres.');
         }
         $this->exigirUsuario($usuarioId);
-        $tarea = Tarea::create(['user_id' => $usuarioId, 'titulo' => $titulo]);
+        Validator::make(['creadaEn' => $creadaEn], ['creadaEn' => ['nullable', 'date']])->validate();
+        $tarea = new Tarea(['user_id' => $usuarioId, 'titulo' => $titulo]);
+        if ($creadaEn !== null) {
+            $tarea->created_at = Carbon::parse($creadaEn)->utc();
+        }
+        $tarea->save();
         $datos = $tarea->load(['creador', 'movidaPor'])->datosTablero();
 
         return ['tarea' => $datos, 'aviso' => $this->difundir(new TareaCreada($datos))];
