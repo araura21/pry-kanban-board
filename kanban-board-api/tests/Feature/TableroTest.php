@@ -76,7 +76,7 @@ class TableroTest extends TestCase
             ->assertViewHas('columnas', TareaService::COLUMNAS)
             ->assertViewHas('tareas', function ($tareas) use ($primera, $segunda) {
                 $this->assertSame([$primera->id, $segunda->id], $tareas->pluck('id')->all());
-                $this->assertSame(['id', 'titulo', 'estado', 'version', 'creador', 'movidaPor', 'creadaEn'], array_keys($tareas[0]));
+                $this->assertSame(['id', 'titulo', 'estado', 'version', 'creador', 'movidaPor', 'creadaEn', 'comprometidaEn', 'actualizadaEn'], array_keys($tareas[0]));
                 $this->assertIsInt($tareas[0]['version']);
                 $this->assertNull($tareas[0]['movidaPor']);
 
@@ -117,13 +117,15 @@ class TableroTest extends TestCase
         Event::fake([TareaMovida::class]);
         $tarea = Tarea::factory()->create();
         $actor = User::factory()->create();
-        $this->actingAs($actor)->patchJson('/tareas/'.$tarea->id.'/mover', ['estado' => 'por_hacer', 'version' => 1])
+        $respuesta = $this->actingAs($actor)->patchJson('/tareas/'.$tarea->id.'/mover', ['estado' => 'por_hacer', 'version' => 1]);
+        $respuesta
             ->assertOk()->assertJsonPath('tarea.estado', 'por_hacer')
             ->assertJsonPath('tarea.version', 2)->assertJsonPath('tarea.movidaPor', $actor->name);
         $tarea->refresh();
         $this->assertSame('por_hacer', $tarea->estado);
         $this->assertSame($actor->id, $tarea->movida_por);
         $this->assertNotNull($tarea->comprometida_en);
+        $respuesta->assertJsonPath('tarea.comprometidaEn', $tarea->comprometida_en->toISOString());
         Event::assertDispatched(TareaMovida::class);
     }
 
@@ -176,13 +178,15 @@ class TableroTest extends TestCase
     public function test_eliminar_en_los_dos_estados_permitidos_emite_el_id(): void
     {
         Event::fake([TareaEliminada::class]);
-        $this->actingAs(User::factory()->create());
+        $usuario = User::factory()->create();
+        $this->actingAs($usuario);
         foreach (['creado', 'por_hacer'] as $estado) {
             $tarea = Tarea::factory()->create(['estado' => $estado]);
             $this->deleteJson('/tareas/'.$tarea->id)->assertOk()->assertJsonPath('tareaId', $tarea->id);
             $this->assertDatabaseMissing('tareas', ['id' => $tarea->id]);
         }
         Event::assertDispatchedTimes(TareaEliminada::class, 2);
+        Event::assertDispatched(TareaEliminada::class, fn ($evento) => $evento->eliminadaPor === $usuario->name);
     }
 
     public function test_servidor_impide_borrar_trabajo_iniciado_aunque_se_force_la_peticion(): void
@@ -269,5 +273,14 @@ class TableroTest extends TestCase
             $this->artisan('tareas:mover', ['tarea' => (string) $id, 'estado' => $estado, 'usuario' => (string) $usuario])->assertExitCode(1);
         }
         $this->assertSame(1, $tarea->fresh()->version);
+    }
+
+    public function test_el_evento_excluye_el_socket_de_quien_hizo_el_cambio(): void
+    {
+        Event::fake([TareaCreada::class]);
+        $this->actingAs(User::factory()->create())
+            ->postJson('/tareas', ['titulo' => 'Solo para los demás'], ['X-Socket-ID' => '123.456'])
+            ->assertCreated();
+        Event::assertDispatched(TareaCreada::class, fn ($evento) => $evento->socket === '123.456');
     }
 }

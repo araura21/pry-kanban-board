@@ -39,8 +39,9 @@ class TareaService
         return ['tarea' => $datos, 'aviso' => $this->difundir(new TareaCreada($datos))];
     }
 
-    public function eliminar(int $tareaId): array
+    public function eliminar(int $tareaId, ?int $usuarioId = null): array
     {
+        $nombre = $usuarioId ? User::whereKey($usuarioId)->value('name') : null;
         DB::transaction(function () use ($tareaId) {
             $tarea = Tarea::lockForUpdate()->find($tareaId);
             if (! $tarea) {
@@ -52,7 +53,7 @@ class TareaService
             $tarea->delete();
         });
 
-        return ['tareaId' => $tareaId, 'aviso' => $this->difundir(new TareaEliminada($tareaId))];
+        return ['tareaId' => $tareaId, 'aviso' => $this->difundir(new TareaEliminada($tareaId, $nombre))];
     }
 
     public function mover(int $tareaId, string $estado, int $usuarioId, ?int $version = null): array
@@ -100,6 +101,7 @@ class TareaService
     private function difundir(object $evento): ?string
     {
         try {
+            $evento->dontBroadcastToCurrentUser();
             event($evento);
 
             return null;

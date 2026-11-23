@@ -39,6 +39,8 @@ class Tarea extends Model
             'creador' => $this->creador->name,
             'movidaPor' => $this->movidaPor?->name,
             'creadaEn' => $this->created_at->toISOString(),
+            'comprometidaEn' => $this->comprometida_en?->toISOString(),
+            'actualizadaEn' => $this->updated_at->toISOString(),
         ];
     }
 }

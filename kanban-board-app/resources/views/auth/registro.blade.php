@@ -8,7 +8,7 @@
     <form method="post" action="{{ route('registro') }}" class="formulario-acceso">
         @csrf
         @if ($errors->any())
-            <div class="mensaje error" role="alert">{{ $errors->first() }}</div>
+            <x-mensaje tipo="error">{{ $errors->first() }}</x-mensaje>
         @endif
         <label for="name">Nombre</label>
         <input id="name" name="name" value="{{ old('name') }}" maxlength="100" autocomplete="name" required autofocus>

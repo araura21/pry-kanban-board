@@ -8,7 +8,7 @@
     <form method="post" action="{{ route('login') }}" class="formulario-acceso">
         @csrf
         @if ($errors->any())
-            <div class="mensaje error" role="alert">{{ $errors->first() }}</div>
+            <x-mensaje tipo="error">{{ $errors->first() }}</x-mensaje>
         @endif
         <label for="email">Correo</label>
         <input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" required autofocus>

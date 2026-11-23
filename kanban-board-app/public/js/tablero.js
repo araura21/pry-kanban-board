@@ -7,16 +7,13 @@ const ocupadas = new Set();
 const formulario = document.getElementById('crear-tarea');
 const titulo = document.getElementById('titulo');
 let arrastre = null;
+const formatoFecha = new Intl.DateTimeFormat('es-EC', {
+    timeZone: 'America/Guayaquil',
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', hour12: false,
+});
 
-function mostrarMensaje(texto, tipo = 'error', recargar = false) {
-    const mensaje = document.getElementById('mensaje');
-    document.getElementById('mensaje-texto').textContent = texto;
-    mensaje.className = 'mensaje ' + tipo;
-    mensaje.hidden = false;
-    document.getElementById('recargar').hidden = !recargar;
-}
-
-document.getElementById('recargar').addEventListener('click', () => window.location.reload());
+const recargar = Notificaciones.recargar('Recargar tablero');
 
 function textoElemento(etiqueta, clase, texto) {
     const elemento = document.createElement(etiqueta);
@@ -43,7 +40,6 @@ function dibujarTablero() {
             tarjeta.dataset.id = tarea.id;
             tarjeta.tabIndex = -1;
             const cabecera = textoElemento('div', 'cabecera-tarjeta', '');
-            cabecera.append(textoElemento('span', 'tarjeta-id', '#' + tarea.id));
             if ((config.transiciones[tarea.estado] || []).length && !ocupadas.has(tarea.id)) {
                 prepararArrastre(tarjeta, tarea);
                 const agarre = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -62,14 +58,17 @@ function dibujarTablero() {
                 }
                 cabecera.append(agarre);
             }
+            if (cabecera.childElementCount) tarjeta.append(cabecera);
             tarjeta.append(
-                cabecera,
                 textoElemento('h3', '', tarea.titulo),
                 textoElemento('p', 'tarjeta-autor', 'Creada por ' + tarea.creador)
             );
             if (tarea.movidaPor) {
                 tarjeta.append(textoElemento('p', 'tarjeta-autor', 'Movida por ' + tarea.movidaPor));
             }
+            const fecha = textoElemento('time', 'tarjeta-fecha', formatoFecha.format(new Date(tarea.actualizadaEn)));
+            fecha.dateTime = tarea.actualizadaEn;
+            tarjeta.append(fecha);
             const acciones = textoElemento('div', 'tarjeta-acciones', '');
             for (const destino of config.transiciones[tarea.estado] || []) {
                 const boton = textoElemento('button', 'accion-mover', 'Pasar a ' + config.columnas[destino]);
@@ -110,10 +109,17 @@ function dibujarTablero() {
 
 function recibirTarea(tarea) {
     const anterior = tareas.get(tarea.id);
-    if (eliminadas.has(tarea.id) || (anterior && anterior.version >= tarea.version)) return;
+    if (eliminadas.has(tarea.id) || (anterior && anterior.version >= tarea.version)) return false;
     tareas.set(tarea.id, tarea);
     dibujarTablero();
     if (!arrastre) document.querySelector('.tarjeta[data-id="' + tarea.id + '"]')?.classList.add('actualizada');
+    return true;
+}
+
+function quitarTarea(tareaId) {
+    eliminadas.add(tareaId);
+    tareas.delete(tareaId);
+    dibujarTablero();
 }
 
 function moverTarea(tarea, destino) {
@@ -199,6 +205,8 @@ async function pedir(metodo, ruta, datos = {}) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                // Con este ID el servidor no reenvía el evento a esta misma pestaña.
+                ...(window.echoTablero?.socketId() ? { 'X-Socket-ID': window.echoTablero.socketId() } : {}),
             },
             body: JSON.stringify(datos),
         });
@@ -225,10 +233,12 @@ async function operar(tarea, metodo, ruta, datos = {}) {
     dibujarTablero();
     try {
         const resultado = await pedir(metodo, ruta, datos);
-        if (resultado.aviso) mostrarMensaje(resultado.aviso, 'aviso', true);
-        else mostrarMensaje(metodo === 'DELETE' ? 'Tarjeta eliminada.' : 'Tarjeta comprometida: ahora está en Por hacer.', 'exito');
+        if (metodo === 'DELETE') quitarTarea(tarea.id);
+        else recibirTarea(resultado.tarea);
+        if (resultado.aviso) Notificaciones.aviso(resultado.aviso, { accion: recargar });
+        else Notificaciones.exito(metodo === 'DELETE' ? 'Tarjeta eliminada.' : 'Tarjeta comprometida: ahora está en Por hacer.');
     } catch (error) {
-        mostrarMensaje(error.message, 'error', true);
+        Notificaciones.error(error.message, { accion: recargar });
     } finally {
         ocupadas.delete(tarea.id);
         dibujarTablero();
@@ -240,7 +250,7 @@ formulario.addEventListener('submit', async evento => {
     const boton = formulario.querySelector('button');
     if (boton.disabled) return;
     if (!titulo.value.trim()) {
-        mostrarMensaje('Escribe un título para la tarea.');
+        Notificaciones.error('Escribe un título para la tarea.');
         titulo.focus();
         return;
     }
@@ -249,11 +259,12 @@ formulario.addEventListener('submit', async evento => {
     try {
         const resultado = await pedir('POST', '/tareas', { titulo: titulo.value.trim() });
         titulo.value = '';
-        if (resultado.aviso) mostrarMensaje(resultado.aviso, 'aviso', true);
-        else mostrarMensaje('Tarjeta creada.', 'exito');
+        recibirTarea(resultado.tarea);
+        if (resultado.aviso) Notificaciones.aviso(resultado.aviso, { accion: recargar });
+        else Notificaciones.exito('Tarjeta creada.');
         titulo.focus();
     } catch (error) {
-        mostrarMensaje(error.message, 'error', true);
+        Notificaciones.error(error.message, { accion: recargar });
     } finally {
         boton.disabled = false;
         boton.textContent = 'Crear tarjeta';
@@ -261,11 +272,19 @@ formulario.addEventListener('submit', async evento => {
 });
 
 dibujarTablero();
-const canal = iniciarConexion(() => mostrarMensaje('La conexión volvió. Recarga el tablero para recuperar los cambios que pudiste perder.', 'aviso', true));
-canal?.listen('TareaCreada', evento => recibirTarea(evento.tarea))
-    .listen('TareaMovida', evento => recibirTarea(evento.tarea))
-    .listen('TareaEliminada', evento => {
-        eliminadas.add(evento.tareaId);
-        tareas.delete(evento.tareaId);
-        dibujarTablero();
+const canal = iniciarConexion(() => Notificaciones.aviso('La conexión volvió. Recarga el tablero para recuperar los cambios que pudiste perder.', { accion: recargar }));
+// Estos eventos solo llegan cuando el cambio lo hizo otra persona.
+canal?.listen('TareaCreada', ({ tarea }) => {
+    if (recibirTarea(tarea)) Notificaciones.flotante(Notificaciones.accion(tarea.creador, 'creó', tarea.titulo));
+})
+    .listen('TareaMovida', ({ tarea }) => {
+        if (recibirTarea(tarea)) {
+            Notificaciones.flotante(Notificaciones.accion(tarea.movidaPor, 'movió', tarea.titulo, 'a ' + config.columnas[tarea.estado]));
+        }
+    })
+    .listen('TareaEliminada', ({ tareaId, eliminadaPor }) => {
+        const tarea = tareas.get(tareaId);
+        if (!tarea) return;
+        quitarTarea(tareaId);
+        Notificaciones.flotante(Notificaciones.accion(eliminadaPor, 'eliminó', tarea.titulo));
     });

@@ -1,0 +1,79 @@
+/* Componente compartido de notificaciones. Lo usa public/js/notificaciones.js.
+   Las variables de color (--tinta, --papel, --menta...) vienen de kanban.css. */
+
+/* Mensaje dentro de la página, generado por el servidor con <x-mensaje> (por ejemplo, errores del login). */
+.mensaje { padding: 12px 16px; margin-bottom: 22px; border: var(--borde); border-radius: 8px; background: var(--papel); font-size: 14px; overflow-wrap: anywhere; }
+.mensaje.error { color: var(--error); background: #fff0eb; }
+.mensaje.aviso { color: #674719; background: #fff4cf; }
+.mensaje.exito { background: #dffbf0; }
+
+/* Pila de tarjetas arriba a la derecha, debajo de la cabecera */
+.notificaciones {
+    position: fixed; top: 92px; right: 20px; z-index: 50;
+    display: grid; gap: 12px; width: min(380px, calc(100vw - 32px));
+    pointer-events: none;
+}
+
+.notificacion {
+    --color-tipo: var(--violeta);
+    --fondo-tipo: #f4ecfd;
+    position: relative; overflow: hidden; pointer-events: auto;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: start; gap: 12px;
+    padding: 14px 12px 16px 14px;
+    border: var(--borde); border-radius: 12px;
+    background: linear-gradient(90deg, var(--fondo-tipo) 0 58px, var(--papel) 58px);
+    box-shadow: 4px 4px 0 var(--tinta);
+    color: var(--tinta);
+    animation: notificacion-entra .28s cubic-bezier(.16, 1, .3, 1);
+}
+.notificacion.exito { --color-tipo: var(--menta); --fondo-tipo: #dffbf0; }
+.notificacion.error { --color-tipo: #ff6b6b; --fondo-tipo: #fff0eb; }
+.notificacion.aviso { --color-tipo: var(--amarillo); --fondo-tipo: #fff8d6; }
+.notificacion.saliendo { animation: notificacion-sale .22s ease-in forwards; }
+
+.notificacion-icono {
+    display: grid; place-items: center; width: 32px; height: 32px;
+    border: var(--borde); border-radius: 50%; background: var(--color-tipo);
+}
+.notificacion-icono svg { width: 18px; height: 18px; fill: none; stroke: var(--tinta); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.notificacion-cuerpo { min-width: 0; padding-top: 1px; }
+.notificacion-titulo { margin: 0 0 2px; font-size: 14px; font-weight: 700; line-height: 1.35; }
+.notificacion.error .notificacion-titulo { color: var(--error); }
+.notificacion-texto { margin: 0; color: var(--suave); font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
+
+.notificacion-accion {
+    margin-top: 8px; padding: 5px 10px; min-height: 32px;
+    border: var(--borde); border-radius: 6px; background: var(--color-tipo); color: var(--tinta);
+    font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: 2px 2px 0 var(--tinta);
+}
+.notificacion-accion:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--tinta); }
+
+.notificacion-cerrar {
+    width: 28px; height: 28px; margin: -4px -2px 0 0; padding: 0;
+    border: 0; border-radius: 6px; background: transparent; color: var(--suave);
+    font-size: 20px; line-height: 1; cursor: pointer;
+}
+.notificacion-cerrar:hover { background: #00000010; color: var(--tinta); }
+.notificacion :is(button):focus-visible { outline: 3px solid var(--violeta); outline-offset: 2px; }
+
+/* Barra que se vacía hasta que la tarjeta se cierra sola; se pausa al pasar el ratón */
+.notificacion-progreso {
+    position: absolute; left: 0; bottom: 0; width: 100%; height: 4px;
+    background: var(--color-tipo); border-top: 1px solid var(--tinta);
+    transform-origin: left; animation: notificacion-progreso linear forwards;
+}
+.notificacion:hover .notificacion-progreso,
+.notificacion:focus-within .notificacion-progreso { animation-play-state: paused; }
+
+@keyframes notificacion-entra { from { opacity: 0; transform: translateX(24px); } }
+@keyframes notificacion-sale { to { opacity: 0; transform: translateX(24px); } }
+@keyframes notificacion-progreso { to { transform: scaleX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .notificacion, .notificacion.saliendo { animation: none; }
+}
+
+@media (max-width: 700px) {
+    .notificaciones { top: 12px; right: 16px; left: 16px; width: auto; }
+}

@@ -19,10 +19,10 @@ class TareaController extends Controller
         }
     }
 
-    public function eliminar(int $tarea, TareaService $servicio): JsonResponse
+    public function eliminar(Request $request, int $tarea, TareaService $servicio): JsonResponse
     {
         try {
-            return response()->json($servicio->eliminar($tarea));
+            return response()->json($servicio->eliminar($tarea, $request->user()->id));
         } catch (ReglaTableroException $error) {
             return response()->json(['error' => $error->getMessage()], 422);
         }

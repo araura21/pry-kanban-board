@@ -7,6 +7,7 @@
     <title>@yield('titulo', 'Tablero') · Kanban</title>
     <link rel="preload" href="{{ asset('fonts/space-grotesk-regular.ttf') }}" as="font" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="{{ asset('css/kanban.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/notificaciones.css') }}">
 </head>
 <body class="@yield('clase-pagina')">
     <a class="saltar" href="#contenido">Ir al contenido</a>
@@ -29,6 +30,7 @@
         @endauth
     </header>
     @yield('contenido')
+    <script src="{{ asset('js/notificaciones.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

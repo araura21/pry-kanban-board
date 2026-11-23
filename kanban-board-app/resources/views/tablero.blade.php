@@ -19,10 +19,6 @@
         <button class="boton-principal" type="submit">Crear tarjeta</button>
         <p id="ayuda-titulo" class="ayuda">Hasta 100 caracteres. Se añadirá a Creado.</p>
     </form>
-    <div id="mensaje" class="mensaje" role="status" hidden>
-        <span id="mensaje-texto"></span>
-        <button type="button" class="boton-texto" id="recargar" hidden>Recargar tablero</button>
-    </div>
     <noscript><p class="mensaje error">Activa JavaScript para ver y usar el tablero.</p></noscript>
     <p class="politica" id="ayuda-arrastre">Arrastra de <strong>Creado</strong> a <strong>Por hacer</strong> o usa el botón de la tarjeta. Puedes eliminarla mientras no haya comenzado.</p>
     <section class="tablero" aria-label="Columnas del tablero" tabindex="0">

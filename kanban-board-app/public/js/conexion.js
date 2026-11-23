@@ -25,6 +25,7 @@ function iniciarConexion(alRecuperar = () => {}) {
         authEndpoint: '/broadcasting/auth',
         auth: { headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content } },
     });
+    window.echoTablero = echo;
 
     let estuvoConectado = false;
     let necesitaRecarga = false;
