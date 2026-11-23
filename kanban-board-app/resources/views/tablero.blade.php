@@ -16,8 +16,15 @@
             <label for="titulo">Nueva tarea</label>
             <input id="titulo" name="titulo" maxlength="100" required placeholder="Por ejemplo: preparar la demostración" autocomplete="off" aria-describedby="ayuda-titulo">
         </div>
+         <div class="campo-fecha">
+            <label for="creada-en">Fecha de creación (opcional)</label>
+            <input id="creada-en" name="creadaEn" type="date" aria-describedby="ayuda-fecha">
+        </div>
         <button class="boton-principal" type="submit">Crear tarjeta</button>
-        <p id="ayuda-titulo" class="ayuda">Hasta 100 caracteres. Se añadirá a Creado.</p>
+        
+        <p id="ayuda-titulo" class="ayuda ayuda-titulo">Hasta 100 caracteres. Se añadirá a Creado.</p>
+        <p id="ayuda-fecha" class="ayuda ayuda-fecha">Si la dejas vacía, se usará la fecha actual.</p>
+    </form>
     </form>
     <noscript><p class="mensaje error">Activa JavaScript para ver y usar el tablero.</p></noscript>
     <p class="politica" id="ayuda-arrastre">Arrastra de <strong>Creado</strong> a <strong>Por hacer</strong> o usa el botón de la tarjeta. Puedes eliminarla mientras no haya comenzado.</p>
@@ -25,7 +32,9 @@
         @foreach ($columnas as $estado => $nombre)
             <section class="columna" data-estado="{{ $estado }}" aria-labelledby="columna-{{ $estado }}">
                 <header class="columna-cabecera">
+                    
                     <h2 id="columna-{{ $estado }}">{{ $nombre }}</h2>
+                    
                     <span class="cantidad" id="cantidad-{{ $estado }}" aria-label="Cantidad de tareas">0</span>
                 </header>
                 <div class="tarjetas" id="tarjetas-{{ $estado }}"></div>

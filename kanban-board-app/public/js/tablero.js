@@ -6,12 +6,14 @@ const eliminadas = new Set();
 const ocupadas = new Set();
 const formulario = document.getElementById('crear-tarea');
 const titulo = document.getElementById('titulo');
+const creadaEn = document.getElementById('creada-en');
 let arrastre = null;
 const formatoFecha = new Intl.DateTimeFormat('es-EC', {
     timeZone: 'America/Guayaquil',
     day: '2-digit', month: '2-digit', year: 'numeric',
     hour: '2-digit', minute: '2-digit', hour12: false,
 });
+
 
 const recargar = Notificaciones.recargar('Recargar tablero');
 
@@ -66,9 +68,14 @@ function dibujarTablero() {
             if (tarea.movidaPor) {
                 tarjeta.append(textoElemento('p', 'tarjeta-autor', 'Movida por ' + tarea.movidaPor));
             }
-            const fecha = textoElemento('time', 'tarjeta-fecha', formatoFecha.format(new Date(tarea.actualizadaEn)));
-            fecha.dateTime = tarea.actualizadaEn;
+            const fecha = textoElemento('time', 'tarjeta-fecha', 'Creada: ' + formatoFecha.format(new Date(tarea.creadaEn)));
+            fecha.dateTime = tarea.creadaEn;
             tarjeta.append(fecha);
+            if (tarea.version > 1) {
+                const actualizada = textoElemento('time', 'tarjeta-fecha', 'Actualizada: ' + formatoFecha.format(new Date(tarea.actualizadaEn)));
+                actualizada.dateTime = tarea.actualizadaEn;
+                tarjeta.append(actualizada);
+            }
             const acciones = textoElemento('div', 'tarjeta-acciones', '');
             for (const destino of config.transiciones[tarea.estado] || []) {
                 const boton = textoElemento('button', 'accion-mover', 'Pasar a ' + config.columnas[destino]);
@@ -257,8 +264,13 @@ formulario.addEventListener('submit', async evento => {
     boton.disabled = true;
     boton.textContent = 'Guardando…';
     try {
-        const resultado = await pedir('POST', '/tareas', { titulo: titulo.value.trim() });
+        const datos = { titulo: titulo.value.trim() };
+        if (creadaEn.value) {
+            datos.creadaEn = creadaEn.value + 'T00:00:00-05:00';
+        }
+        const resultado = await pedir('POST', '/tareas', datos);
         titulo.value = '';
+        creadaEn.value = '';
         recibirTarea(resultado.tarea);
         if (resultado.aviso) Notificaciones.aviso(resultado.aviso, { accion: recargar });
         else Notificaciones.exito('Tarjeta creada.');
